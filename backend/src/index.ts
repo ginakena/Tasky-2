@@ -9,7 +9,7 @@ const app: Express = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://tasky-frontend-vk7b.onrender.com",
     credentials: true,
   })
 );
