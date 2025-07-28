@@ -60,7 +60,7 @@ const fetchTasks = async (): Promise<Task[]> => {
 }
 
 const TasksPage = () => {
-  const { user, hasHydrated } = useUser()
+  const {  hasHydrated } = useUser()
   const navigate = useNavigate()
   const [completingTasks, setCompletingTasks] = useState<Set<string>>(new Set())
   const [deletingTasks, setDeletingTasks] = useState<Set<string>>(new Set())

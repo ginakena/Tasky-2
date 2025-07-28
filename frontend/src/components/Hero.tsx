@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography, Button, Container, Stack } from "@mui/material";
 
 const Hero = () => {

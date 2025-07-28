@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Avatar, Paper, useTheme } from "@mui/material";
+import { Box, Container, Typography, Avatar, Paper } from "@mui/material";
 
 
 const testimonials = [
@@ -26,7 +26,7 @@ const testimonials = [
 ];
 
 export const TestimonialsSection = () => {
-  const theme = useTheme();
+  
 
   return (
     <Box sx={{ py: 10, backgroundColor: "#fff" }}>

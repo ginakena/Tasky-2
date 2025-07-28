@@ -1,5 +1,5 @@
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import type React from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Box,
   Container,
@@ -19,7 +19,7 @@ import {
   Chip,
   Tooltip,
   CircularProgress,
-} from "@mui/material"
+} from "@mui/material";
 import {
   PhotoCamera,
   Person,
@@ -32,10 +32,10 @@ import {
   Badge,
   Visibility,
   VisibilityOff,
-} from "@mui/icons-material"
-import { useNavigate } from "react-router-dom"
-import useUser from "../store/userStore"
-import API from "../api/axios"
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import useUser from "../store/userStore";
+import API from "../api/axios";
 
 // Updated API functions with real endpoints
 const updateUserProfile = async (profileData: any, token: string) => {
@@ -51,10 +51,10 @@ const updateUserProfile = async (profileData: any, token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    },
-  )
-  return response.data
-}
+    }
+  );
+  return response.data;
+};
 
 const updateUserPassword = async (passwordData: any, token: string) => {
   const response = await API.patch(
@@ -67,28 +67,28 @@ const updateUserPassword = async (passwordData: any, token: string) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    },
-  )
-  return response.data
-}
+    }
+  );
+  return response.data;
+};
 
 const uploadProfilePicture = async (file: File, token: string) => {
-  const formData = new FormData()
-  formData.append("avatar", file)
+  const formData = new FormData();
+  formData.append("avatar", file);
 
   const response = await API.patch("/user/avatar", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
-  })
-  return response.data
-}
+  });
+  return response.data;
+};
 
 const ProfilePage: React.FC = () => {
-  const { user, setUser, hasHydrated } = useUser()
-  const navigate = useNavigate()
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { user, setUser, hasHydrated } = useUser();
+  const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Profile form state
   const [profileForm, setProfileForm] = useState({
@@ -96,32 +96,36 @@ const ProfilePage: React.FC = () => {
     lastName: user?.lastName || "",
     userName: user?.userName || "",
     email: user?.email || "",
-  })
+  });
 
   // Password form state
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
-  })
+  });
 
   // UI state
-  const [profileLoading, setProfileLoading] = useState(false)
-  const [passwordLoading, setPasswordLoading] = useState(false)
-  const [avatarLoading, setAvatarLoading] = useState(false)
-  const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" as "success" | "error" })
-  const [passwordError, setPasswordError] = useState("")
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+  const [passwordError, setPasswordError] = useState("");
   const [profileErrors, setProfileErrors] = useState({
     firstName: "",
     lastName: "",
     userName: "",
     email: "",
-  })
+  });
   const [showPasswords, setShowPasswords] = useState({
     current: false,
     new: false,
     confirm: false,
-  })
+  });
 
   // Update form when user data changes
   useEffect(() => {
@@ -131,13 +135,13 @@ const ProfilePage: React.FC = () => {
         lastName: user.lastName,
         userName: user.userName,
         email: user.email,
-      })
+      });
     }
-  }, [user])
+  }, [user]);
 
   const getInitials = (firstName: string, lastName: string) => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
-  }
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  };
 
   const validateProfileForm = () => {
     const errors = {
@@ -145,55 +149,60 @@ const ProfilePage: React.FC = () => {
       lastName: "",
       userName: "",
       email: "",
-    }
+    };
 
     if (!profileForm.firstName.trim()) {
-      errors.firstName = "First name is required"
+      errors.firstName = "First name is required";
     } else if (profileForm.firstName.trim().length < 2) {
-      errors.firstName = "First name must be at least 2 characters"
+      errors.firstName = "First name must be at least 2 characters";
     }
 
     if (!profileForm.lastName.trim()) {
-      errors.lastName = "Last name is required"
+      errors.lastName = "Last name is required";
     } else if (profileForm.lastName.trim().length < 2) {
-      errors.lastName = "Last name must be at least 2 characters"
+      errors.lastName = "Last name must be at least 2 characters";
     }
 
     if (!profileForm.userName.trim()) {
-      errors.userName = "Username is required"
+      errors.userName = "Username is required";
     } else if (profileForm.userName.trim().length < 3) {
-      errors.userName = "Username must be at least 3 characters"
+      errors.userName = "Username must be at least 3 characters";
     } else if (!/^[a-zA-Z0-9_]+$/.test(profileForm.userName)) {
-      errors.userName = "Username can only contain letters, numbers, and underscores"
+      errors.userName =
+        "Username can only contain letters, numbers, and underscores";
     }
 
     if (!profileForm.email.trim()) {
-      errors.email = "Email is required"
+      errors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profileForm.email)) {
-      errors.email = "Please enter a valid email address"
+      errors.email = "Please enter a valid email address";
     }
 
-    setProfileErrors(errors)
-    return !Object.values(errors).some((error) => error !== "")
-  }
+    setProfileErrors(errors);
+    return !Object.values(errors).some((error) => error !== "");
+  };
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validateProfileForm()) {
-      return
+      return;
     }
 
     if (!user?.token) {
-      setSnackbar({ open: true, message: "Authentication required", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Authentication required",
+        severity: "error",
+      });
+      return;
     }
 
-    setProfileLoading(true)
-    setProfileErrors({ firstName: "", lastName: "", userName: "", email: "" })
+    setProfileLoading(true);
+    setProfileErrors({ firstName: "", lastName: "", userName: "", email: "" });
 
     try {
-      const response = await updateUserProfile(profileForm, user.token)
+      await updateUserProfile(profileForm, user.token);
 
       if (user) {
         const updatedUser = {
@@ -203,45 +212,54 @@ const ProfilePage: React.FC = () => {
           userName: profileForm.userName,
           email: profileForm.email,
           lastUpdated: new Date().toISOString(),
-        }
+        };
 
-        setUser(updatedUser)
-        setSnackbar({ open: true, message: "Profile updated successfully! 🎉", severity: "success" })
+        setUser(updatedUser);
+        setSnackbar({
+          open: true,
+          message: "Profile updated successfully! 🎉",
+          severity: "success",
+        });
       }
     } catch (error: any) {
-      console.error("Profile update error:", error)
-      const message = error?.response?.data?.message || "Failed to update profile"
-      setSnackbar({ open: true, message, severity: "error" })
+      console.error("Profile update error:", error);
+      const message =
+        error?.response?.data?.message || "Failed to update profile";
+      setSnackbar({ open: true, message, severity: "error" });
 
       // Handle specific field errors
       if (error?.response?.data?.errors) {
-        setProfileErrors(error.response.data.errors)
+        setProfileErrors(error.response.data.errors);
       }
     } finally {
-      setProfileLoading(false)
+      setProfileLoading(false);
     }
-  }
+  };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setPasswordError("")
+    e.preventDefault();
+    setPasswordError("");
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      setPasswordError("New passwords do not match")
-      return
+      setPasswordError("New passwords do not match");
+      return;
     }
 
     if (passwordForm.newPassword.length < 6) {
-      setPasswordError("New password must be at least 6 characters long")
-      return
+      setPasswordError("New password must be at least 6 characters long");
+      return;
     }
 
     if (!user?.token) {
-      setSnackbar({ open: true, message: "Authentication required", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Authentication required",
+        severity: "error",
+      });
+      return;
     }
 
-    setPasswordLoading(true)
+    setPasswordLoading(true);
 
     try {
       await updateUserPassword(
@@ -249,69 +267,91 @@ const ProfilePage: React.FC = () => {
           currentPassword: passwordForm.currentPassword,
           newPassword: passwordForm.newPassword,
         },
-        user.token,
-      )
+        user.token
+      );
 
       setPasswordForm({
         currentPassword: "",
         newPassword: "",
         confirmPassword: "",
-      })
+      });
 
-      setSnackbar({ open: true, message: "Password updated successfully! 🔒", severity: "success" })
+      setSnackbar({
+        open: true,
+        message: "Password updated successfully! 🔒",
+        severity: "success",
+      });
     } catch (error: any) {
-      console.error("Password update error:", error)
-      const message = error?.response?.data?.message || "Failed to update password"
-      setPasswordError(message)
+      console.error("Password update error:", error);
+      const message =
+        error?.response?.data?.message || "Failed to update password";
+      setPasswordError(message);
     } finally {
-      setPasswordLoading(false)
+      setPasswordLoading(false);
     }
-  }
+  };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      setSnackbar({ open: true, message: "Please select an image file", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Please select an image file",
+        severity: "error",
+      });
+      return;
     }
 
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
-      setSnackbar({ open: true, message: "Image size must be less than 5MB", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Image size must be less than 5MB",
+        severity: "error",
+      });
+      return;
     }
 
     if (!user?.token) {
-      setSnackbar({ open: true, message: "Authentication required", severity: "error" })
-      return
+      setSnackbar({
+        open: true,
+        message: "Authentication required",
+        severity: "error",
+      });
+      return;
     }
 
-    setAvatarLoading(true)
+    setAvatarLoading(true);
 
     try {
-      const response = await uploadProfilePicture(file, user.token)
+      const response = await uploadProfilePicture(file, user.token);
 
       if (user) {
         const updatedUser = {
           ...user,
           avatar: response.avatar || response.imageUrl,
           lastUpdated: new Date().toISOString(),
-        }
+        };
 
-        setUser(updatedUser)
-        setSnackbar({ open: true, message: "Profile picture updated! 📸", severity: "success" })
+        setUser(updatedUser);
+        setSnackbar({
+          open: true,
+          message: "Profile picture updated! 📸",
+          severity: "success",
+        });
       }
     } catch (error: any) {
-      console.error("Avatar upload error:", error)
-      const message = error?.response?.data?.message || "Failed to upload image"
-      setSnackbar({ open: true, message, severity: "error" })
+      console.error("Avatar upload error:", error);
+      const message =
+        error?.response?.data?.message || "Failed to upload image";
+      setSnackbar({ open: true, message, severity: "error" });
     } finally {
-      setAvatarLoading(false)
+      setAvatarLoading(false);
     }
-  }
+  };
 
   if (!hasHydrated) {
     return (
@@ -323,7 +363,7 @@ const ProfilePage: React.FC = () => {
           </Typography>
         </Box>
       </Container>
-    )
+    );
   }
 
   if (!user?.token) {
@@ -333,12 +373,16 @@ const ProfilePage: React.FC = () => {
           <Typography variant="h6" gutterBottom>
             Please log in to access your profile
           </Typography>
-          <Button variant="contained" onClick={() => navigate("/login")} sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/login")}
+            sx={{ mt: 2 }}
+          >
             Go to Login
           </Button>
         </Paper>
       </Container>
-    )
+    );
   }
 
   return (
@@ -360,7 +404,10 @@ const ProfilePage: React.FC = () => {
                 </IconButton>
               </Tooltip>
               <Person sx={{ fontSize: 32, color: "primary.main" }} />
-              <Typography variant="h4" sx={{ fontWeight: 700, color: "text.primary" }}>
+              <Typography
+                variant="h4"
+                sx={{ fontWeight: 700, color: "text.primary" }}
+              >
                 Profile Settings
               </Typography>
             </Box>
@@ -371,7 +418,7 @@ const ProfilePage: React.FC = () => {
 
           <Grid container spacing={4}>
             {/* Profile Picture Section */}
-            <Grid size={{xs:12, md:4}}>
+            <Grid size={{ xs: 12, md: 4 }}>
               <Card
                 sx={{
                   height: "fit-content",
@@ -380,7 +427,13 @@ const ProfilePage: React.FC = () => {
                 }}
               >
                 <CardContent sx={{ textAlign: "center", py: 4 }}>
-                  <Box sx={{ position: "relative", display: "inline-block", mb: 3 }}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      display: "inline-block",
+                      mb: 3,
+                    }}
+                  >
                     <Avatar
                       src={user.avatar}
                       sx={{
@@ -394,7 +447,8 @@ const ProfilePage: React.FC = () => {
                         boxShadow: 3,
                       }}
                     >
-                      {!user.avatar && getInitials(user.firstName, user.lastName)}
+                      {!user.avatar &&
+                        getInitials(user.firstName, user.lastName)}
                     </Avatar>
 
                     <Tooltip title="Change profile picture">
@@ -422,7 +476,11 @@ const ProfilePage: React.FC = () => {
                     </Tooltip>
                   </Box>
 
-                  <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ fontWeight: 600 }}
+                  >
                     {user.firstName} {user.lastName}
                   </Typography>
                   <Chip
@@ -441,7 +499,9 @@ const ProfilePage: React.FC = () => {
                     ref={fileInputRef}
                     onChange={handleAvatarUpload}
                     accept="image/*"
-                    style={{ display: "none" }}
+                    hidden
+                    aria-hidden="true"
+                    title="Upload profile picture"
                   />
 
                   <Button
@@ -455,7 +515,11 @@ const ProfilePage: React.FC = () => {
                     {avatarLoading ? "Uploading..." : "Change Photo"}
                   </Button>
 
-                  <Typography variant="caption" color="text.secondary" sx={{ mt: 2, display: "block" }}>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ mt: 2, display: "block" }}
+                  >
                     JPG, PNG or GIF (max. 5MB)
                   </Typography>
                 </CardContent>
@@ -463,13 +527,15 @@ const ProfilePage: React.FC = () => {
             </Grid>
 
             {/* Profile Information */}
-            <Grid size={{xs:12, md:8}}>
+            <Grid size={{ xs: 12, md: 8 }}>
               <Stack spacing={3}>
                 {/* Personal Information Card */}
                 <Card sx={{ border: 1, borderColor: "divider" }}>
                   <CardContent sx={{ p: 4 }}>
                     <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                      <AccountCircle sx={{ mr: 2, color: "primary.main", fontSize: 28 }} />
+                      <AccountCircle
+                        sx={{ mr: 2, color: "primary.main", fontSize: 28 }}
+                      />
                       <Typography variant="h6" sx={{ fontWeight: 600 }}>
                         Personal Information
                       </Typography>
@@ -477,91 +543,146 @@ const ProfilePage: React.FC = () => {
 
                     <form onSubmit={handleProfileSubmit}>
                       <Grid container spacing={3}>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="First Name"
                             value={profileForm.firstName}
                             onChange={(e) => {
-                              setProfileForm({ ...profileForm, firstName: e.target.value })
+                              setProfileForm({
+                                ...profileForm,
+                                firstName: e.target.value,
+                              });
                               if (profileErrors.firstName) {
-                                setProfileErrors({ ...profileErrors, firstName: "" })
+                                setProfileErrors({
+                                  ...profileErrors,
+                                  firstName: "",
+                                });
                               }
                             }}
                             error={!!profileErrors.firstName}
                             helperText={profileErrors.firstName}
                             disabled={profileLoading}
                             InputProps={{
-                              startAdornment: <Badge sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Badge
+                                  sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                              ),
                             }}
                           />
                         </Grid>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="Last Name"
                             value={profileForm.lastName}
                             onChange={(e) => {
-                              setProfileForm({ ...profileForm, lastName: e.target.value })
+                              setProfileForm({
+                                ...profileForm,
+                                lastName: e.target.value,
+                              });
                               if (profileErrors.lastName) {
-                                setProfileErrors({ ...profileErrors, lastName: "" })
+                                setProfileErrors({
+                                  ...profileErrors,
+                                  lastName: "",
+                                });
                               }
                             }}
                             error={!!profileErrors.lastName}
                             helperText={profileErrors.lastName}
                             disabled={profileLoading}
                             InputProps={{
-                              startAdornment: <Badge sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Badge
+                                  sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                              ),
                             }}
                           />
                         </Grid>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="Username"
                             value={profileForm.userName}
                             onChange={(e) => {
-                              setProfileForm({ ...profileForm, userName: e.target.value })
+                              setProfileForm({
+                                ...profileForm,
+                                userName: e.target.value,
+                              });
                               if (profileErrors.userName) {
-                                setProfileErrors({ ...profileErrors, userName: "" })
+                                setProfileErrors({
+                                  ...profileErrors,
+                                  userName: "",
+                                });
                               }
                             }}
                             error={!!profileErrors.userName}
-                            helperText={profileErrors.userName || "Only letters, numbers, and underscores allowed"}
+                            helperText={
+                              profileErrors.userName ||
+                              "Only letters, numbers, and underscores allowed"
+                            }
                             disabled={profileLoading}
                             InputProps={{
-                              startAdornment: <Person sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Person
+                                  sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                              ),
                             }}
                           />
                         </Grid>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="Email"
                             type="email"
                             value={profileForm.email}
                             onChange={(e) => {
-                              setProfileForm({ ...profileForm, email: e.target.value })
+                              setProfileForm({
+                                ...profileForm,
+                                email: e.target.value,
+                              });
                               if (profileErrors.email) {
-                                setProfileErrors({ ...profileErrors, email: "" })
+                                setProfileErrors({
+                                  ...profileErrors,
+                                  email: "",
+                                });
                               }
                             }}
                             error={!!profileErrors.email}
                             helperText={profileErrors.email}
                             disabled={profileLoading}
                             InputProps={{
-                              startAdornment: <Email sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Email
+                                  sx={{ mr: 1, color: "text.secondary" }}
+                                />
+                              ),
                             }}
                           />
                         </Grid>
                       </Grid>
 
-                      <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
+                      <Box
+                        sx={{
+                          mt: 4,
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                      >
                         <Button
                           type="submit"
                           variant="contained"
                           size="large"
-                          startIcon={profileLoading ? <CircularProgress size={20} color="inherit" /> : <Edit />}
+                          startIcon={
+                            profileLoading ? (
+                              <CircularProgress size={20} color="inherit" />
+                            ) : (
+                              <Edit />
+                            )
+                          }
                           disabled={profileLoading}
                           sx={{ px: 4 }}
                         >
@@ -576,7 +697,9 @@ const ProfilePage: React.FC = () => {
                 <Card sx={{ border: 1, borderColor: "divider" }}>
                   <CardContent sx={{ p: 4 }}>
                     <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-                      <Security sx={{ mr: 2, color: "primary.main", fontSize: 28 }} />
+                      <Security
+                        sx={{ mr: 2, color: "primary.main", fontSize: 28 }}
+                      />
                       <Typography variant="h6" sx={{ fontWeight: 600 }}>
                         Change Password
                       </Typography>
@@ -590,78 +713,116 @@ const ProfilePage: React.FC = () => {
 
                     <form onSubmit={handlePasswordSubmit}>
                       <Grid container spacing={3}>
-                        <Grid size={{xs:12}}>
+                        <Grid size={{ xs: 12 }}>
                           <TextField
                             fullWidth
                             label="Current Password"
                             type={showPasswords.current ? "text" : "password"}
                             value={passwordForm.currentPassword}
                             onChange={(e) => {
-                              setPasswordForm({ ...passwordForm, currentPassword: e.target.value })
-                              if (passwordError) setPasswordError("")
+                              setPasswordForm({
+                                ...passwordForm,
+                                currentPassword: e.target.value,
+                              });
+                              if (passwordError) setPasswordError("");
                             }}
                             disabled={passwordLoading}
                             InputProps={{
-                              startAdornment: <Lock sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Lock sx={{ mr: 1, color: "text.secondary" }} />
+                              ),
                               endAdornment: (
                                 <IconButton
                                   onClick={() =>
-                                    setShowPasswords({ ...showPasswords, current: !showPasswords.current })
+                                    setShowPasswords({
+                                      ...showPasswords,
+                                      current: !showPasswords.current,
+                                    })
                                   }
                                   edge="end"
                                 >
-                                  {showPasswords.current ? <VisibilityOff /> : <Visibility />}
+                                  {showPasswords.current ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
                                 </IconButton>
                               ),
                             }}
                           />
                         </Grid>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="New Password"
                             type={showPasswords.new ? "text" : "password"}
                             value={passwordForm.newPassword}
                             onChange={(e) => {
-                              setPasswordForm({ ...passwordForm, newPassword: e.target.value })
-                              if (passwordError) setPasswordError("")
+                              setPasswordForm({
+                                ...passwordForm,
+                                newPassword: e.target.value,
+                              });
+                              if (passwordError) setPasswordError("");
                             }}
                             disabled={passwordLoading}
                             helperText="Minimum 6 characters"
                             InputProps={{
-                              startAdornment: <Lock sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Lock sx={{ mr: 1, color: "text.secondary" }} />
+                              ),
                               endAdornment: (
                                 <IconButton
-                                  onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
+                                  onClick={() =>
+                                    setShowPasswords({
+                                      ...showPasswords,
+                                      new: !showPasswords.new,
+                                    })
+                                  }
                                   edge="end"
                                 >
-                                  {showPasswords.new ? <VisibilityOff /> : <Visibility />}
+                                  {showPasswords.new ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
                                 </IconButton>
                               ),
                             }}
                           />
                         </Grid>
-                        <Grid size={{xs:12, sm:6}}>
+                        <Grid size={{ xs: 12, sm: 6 }}>
                           <TextField
                             fullWidth
                             label="Confirm New Password"
                             type={showPasswords.confirm ? "text" : "password"}
                             value={passwordForm.confirmPassword}
                             onChange={(e) => {
-                              setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })
-                              if (passwordError) setPasswordError("")
+                              setPasswordForm({
+                                ...passwordForm,
+                                confirmPassword: e.target.value,
+                              });
+                              if (passwordError) setPasswordError("");
                             }}
                             disabled={passwordLoading}
                             InputProps={{
-                              startAdornment: <Lock sx={{ mr: 1, color: "text.secondary" }} />,
+                              startAdornment: (
+                                <Lock sx={{ mr: 1, color: "text.secondary" }} />
+                              ),
                               endAdornment: (
                                 <IconButton
                                   onClick={() =>
-                                    setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })
+                                    setShowPasswords({
+                                      ...showPasswords,
+                                      confirm: !showPasswords.confirm,
+                                    })
                                   }
                                   edge="end"
                                 >
-                                  {showPasswords.confirm ? <VisibilityOff /> : <Visibility />}
+                                  {showPasswords.confirm ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )}
                                 </IconButton>
                               ),
                             }}
@@ -669,12 +830,24 @@ const ProfilePage: React.FC = () => {
                         </Grid>
                       </Grid>
 
-                      <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
+                      <Box
+                        sx={{
+                          mt: 4,
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                      >
                         <Button
                           type="submit"
                           variant="contained"
                           size="large"
-                          startIcon={passwordLoading ? <CircularProgress size={20} color="inherit" /> : <Lock />}
+                          startIcon={
+                            passwordLoading ? (
+                              <CircularProgress size={20} color="inherit" />
+                            ) : (
+                              <Lock />
+                            )
+                          }
                           disabled={passwordLoading}
                           sx={{ px: 4 }}
                         >
@@ -691,7 +864,11 @@ const ProfilePage: React.FC = () => {
       </Fade>
 
       {/* Snackbar for notifications */}
-      <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
         <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
@@ -701,7 +878,7 @@ const ProfilePage: React.FC = () => {
         </Alert>
       </Snackbar>
     </Container>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;
