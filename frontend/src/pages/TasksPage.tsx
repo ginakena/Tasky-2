@@ -181,7 +181,7 @@ const TasksPage = () => {
           }}
         >
           <Typography variant="h6" color="error.main" gutterBottom>
-            Oops! Something went wrong
+            You don't have any tasks at the moment
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
             We couldn't fetch your tasks. Please try again.
