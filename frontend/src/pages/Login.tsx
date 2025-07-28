@@ -41,7 +41,7 @@ const LoginPage = () => {
       );
     },
     onSuccess: (data: any) => {
-      console.log("Login success:", data); // 👈 log this
+      console.log("Login success:", data); 
       const user = {
         id: data.userData.id,
         firstName: data.userData.firstName,
@@ -100,7 +100,7 @@ const LoginPage = () => {
 
           <form onSubmit={handleSubmit}>
             <TextField
-              label="Email or Username"
+              label=" Email"
               fullWidth
               margin="normal"
               value={emailOrUsername}
