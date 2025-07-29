@@ -67,7 +67,7 @@ export async function loginUser(req: Request, res: Response) {
       .cookie("tasky", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
+        sameSite: "none",
       })
       .status(200)
       .send({userData, token});
