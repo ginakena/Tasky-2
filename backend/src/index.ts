@@ -10,7 +10,7 @@ const app: Express = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://tasky-frontend-vk7b.onrender.com",
+    origin: "https://tasky-2-green.vercel.app",
     credentials: true,
   })
 );
