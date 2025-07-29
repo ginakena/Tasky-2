@@ -7,6 +7,7 @@ import cors from 'cors';
 
 const app: Express = express(); 
 
+app.use(cookieParser());
 app.use(
   cors({
     origin: "https://tasky-frontend-vk7b.onrender.com",
@@ -15,7 +16,7 @@ app.use(
 );
 
 app.use(express.json()); 
-app.use(cookieParser());
+
 app.get("/", (_req, res) => {
     res.send('<h1>Welcome to Tasky</h1>');
 });
